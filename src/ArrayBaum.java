@@ -9,6 +9,11 @@ import java.util.ArrayList;
 public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
 
   /**
+   * Index der nicht erlaubt ist.
+   * Wird zurückgegeben bei Unerreichbarkeit  (NOT FOUND)
+   */
+  private static final int VOID = 0; 
+  /**
    * Datenkontainer (Arrayersatz)
    * ArrayList, damit die Speicherallokation nicht implementiert werden muss
    */
@@ -19,7 +24,8 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
    *   Initialgroesse
    */
   public ArrayBaum(int len){
-    array = new ArrayList<T>(len);
+    // erste Stelle 0 ist mit dem Algo nicht machbar (bleibt frei)
+    array = new ArrayList<T>(len+1);
   }
   
   @Override
@@ -29,12 +35,18 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
 
   @Override
   public T rechtesKind(T wurzel) {
-    return null;
+    int wurzelIndex = getIndex(wurzel);
+    int kindIndex = rechtesKindIndex(wurzelIndex);
+    T kind = array.get(kindIndex);
+    return kind;
   }
 
   @Override
   public T linkesKind(T wurzel) {
-    return null;
+    int wurzelIndex = getIndex(wurzel);
+    int kindIndex = linkesKindIndex(wurzelIndex);
+    T kind = array.get(kindIndex);
+    return kind;
   }
   
   @Override
@@ -59,9 +71,8 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
    *   Index des Eltern des Kindes
    * @return Index des rechten Kindes
    */
-  private int rechtesKindIndex(int wurzelIndex) {
-    int kindIndex = 2 * wurzelIndex + 1;
-
+  private int rechtesKindIndex(int wurzelIndex) { 
+    int kindIndex = wurzelIndex > VOID ? 2 * wurzelIndex + 1 : VOID;
     return kindIndex;
   }
   
@@ -72,8 +83,7 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
    * @return Index des linken Kindes
    */
   private int linkesKindIndex(int wurzelIndex) {
-    int kindIndex = 2 * wurzelIndex;
-
+    int kindIndex = wurzelIndex > VOID ? 2 * wurzelIndex : VOID;
     return kindIndex;
   }
   
@@ -86,6 +96,10 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
   private int getIndex(T datum) {
     int index = 0;
     return index;
+  }
+  
+  private T getDatum(int index){
+    return index > VOID ? array.get(index): null;
   }
 
 }
