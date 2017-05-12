@@ -3,7 +3,7 @@
  * @author peter
  *
  */
-public class BaumClass<T> implements Baum<T> {
+public class BaumClass<T extends Comparable<T> > implements Baum<T> {
   /**
    * Einfügen eines Knotens in den Baum
    * @param neuerKnoten

@@ -1,5 +1,5 @@
 
-public interface Baum<T> {
+public interface Baum<T extends Comparable<T> > {
   
   public void einfuegen(Knoten<T> neuerKnoten);
   public Knoten<T> rechterKnoten(Knoten<T> wurzel);

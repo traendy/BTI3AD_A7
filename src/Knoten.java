@@ -4,7 +4,7 @@
  *
  * @param <T> Objekt dass im knoten liegen soll
  */
-public class Knoten<T> implements Comparable<T> {
+public class Knoten<T extends Comparable<T> > implements Comparable<T> {
   /**
    * Zeiger auf die Kinder des Knotens
    */
