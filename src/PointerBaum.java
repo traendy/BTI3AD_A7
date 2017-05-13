@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * Binärbaum, der seine Daten über Knoten und pointer verwaltet
  * 
@@ -11,9 +13,9 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
   private Knoten<T> wurzelknoten = null;
 
   @Override
-  public void einfuegen(T datum) {
+  public T einfuegen(T datum) {
     // TODO Auto-generated method stub
-    
+    return datum;
   }
 
   @Override
@@ -29,21 +31,21 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
   }
 
   @Override
-  public void inOrder() {
+  public List<T> inOrder() {
     // TODO Auto-generated method stub
-    
+    return null;
   }
 
   @Override
-  public void preOrder() {
+  public List<T> preOrder() {
     // TODO Auto-generated method stub
-    
+    return null;
   }
 
   @Override
-  public void postOrder() {
+  public List<T> postOrder() {
     // TODO Auto-generated method stub
-    
+    return null;
   }
   
   

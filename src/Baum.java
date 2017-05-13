@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * Binärbaum Interface
  * 
@@ -11,8 +13,10 @@ public interface Baum<T extends Comparable<T> > {
    * Einfügen eines Knotens in den Baum
    * @param datum 
    *   Fügt ein neues Objekt an die rictige Stelle ein
+   * @return Referenz auf das einzufügende Objekt oder 
+   *   das Objekt im Bum mit gleichem Schlüssel
    */
-  public void einfuegen(T datum);
+  public T einfuegen(T datum);
   
   /**
    * Ausgabe des rechten Kindes eines Wurzelknotens
@@ -33,16 +37,16 @@ public interface Baum<T extends Comparable<T> > {
   /**
    * Ausgabe des Baumes in Order
    */
-  public void inOrder();
+  public List<T> inOrder();
   
   /**
    * Ausgabe des Baumes preOrder
    */
-  public void preOrder();
+  public List<T> preOrder();
   
   /**
    * Ausgabe des Baumes PostOrder
    */
-  public void postOrder();
+  public List<T> postOrder();
 
 }
