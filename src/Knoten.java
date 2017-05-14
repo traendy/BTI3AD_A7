@@ -8,9 +8,9 @@ public class Knoten<T extends Comparable<T> > implements Comparable<T> {
   /**
    * Zeiger auf die Kinder des Knotens
    */
-  private Knoten rechtesKind =null;
+  private Knoten<T> rechtesKind = null;
 
-  private Knoten linkesKind =null;
+  private Knoten<T> linkesKind = null;
   
   /**
    * Daten im Knoten
@@ -20,7 +20,8 @@ public class Knoten<T extends Comparable<T> > implements Comparable<T> {
   /**
    * Default Konstruktor
    */
-  public Knoten(){  
+  public Knoten(){ 
+ 
   }
   /**
    * Full Konstruktor
@@ -28,7 +29,7 @@ public class Knoten<T extends Comparable<T> > implements Comparable<T> {
    * @param l left child
    * @param d data
    */
-  public Knoten(Knoten r, Knoten l, T d){
+  public Knoten(Knoten<T> r, Knoten<T> l, T d){
     this.rechtesKind=r;
     this.linkesKind = l;
     this.data = d;
@@ -38,6 +39,7 @@ public class Knoten<T extends Comparable<T> > implements Comparable<T> {
    * @param d data
    */
   public Knoten(T d){
+ 
     this.data = d;
   }
   
@@ -53,19 +55,25 @@ public class Knoten<T extends Comparable<T> > implements Comparable<T> {
     return 0;
   }
 
-  public Knoten getRechtesKind() {
+  public Knoten<T> getRechtesKind() {
+    if(rechtesKind ==null){
+      return null;
+    }
     return rechtesKind;
   }
 
-  public void setRechtesKind(Knoten rechtesKind) {
+  public void setRechtesKind(Knoten<T> rechtesKind) {
     this.rechtesKind = rechtesKind;
   }
 
-  public Knoten getLinkesKind() {
+  public Knoten<T> getLinkesKind() {
+    if(linkesKind ==null){
+      return null;
+    }
     return linkesKind;
   }
 
-  public void setLinkesKind(Knoten linkesKind) {
+  public void setLinkesKind(Knoten<T> linkesKind) {
     this.linkesKind = linkesKind;
   }
 
@@ -76,6 +84,10 @@ public class Knoten<T extends Comparable<T> > implements Comparable<T> {
   public void setData(T data) {
     this.data = data;
   }
+
+  
+   
+
   
   
 }
