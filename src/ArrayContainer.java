@@ -22,6 +22,7 @@ public class ArrayContainer<T> {
       @SuppressWarnings("unchecked")
       T[] tmp = (T[]) new Object[index+1];
       System.arraycopy(array, 0, tmp, 0, array.length);
+      array = tmp;
     }
     array[index]= obj;
     contain++;
@@ -29,13 +30,16 @@ public class ArrayContainer<T> {
   
   
   public T get(int index)
-      throws IndexOutOfBoundsException
   { 
-    if (index > array.length || index < 0)
-    {
-      throw new IndexOutOfBoundsException();
+    T res = null;
+    if (index > array.length || index < 0) {
+      res = null;
     }
-    return array[index];
+    else
+    {
+      res = array[index];
+    }
+    return res;
   }
   
   public T remove(int index) 

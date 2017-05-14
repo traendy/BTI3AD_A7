@@ -16,6 +16,11 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
   private static final int VOID = 0; 
   
   /**
+   * WURZELINDEX
+   */
+  private static final int ROOT = VOID + 1;
+  
+  /**
    * Datenkontainer (Arrayersatz)
    * ArrayContainer, welcher uns das Array neu allokiert wenn nötig
    */
@@ -25,7 +30,7 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
    * DefaultKonstruktor mit 63 Platz
    */
   public ArrayBaum(){
-    this(63);
+    this(0);
   }
   
   /**
@@ -41,10 +46,63 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
   
   @Override
   public T einfuegen(T datum) {
-    T res = datum;
+    T res = null;
+    // the first element ?
+    if (getDatum(ROOT) == null){
+      array.set(ROOT, datum);
+      res = array.get(ROOT);    
+    } 
+    else 
+    {
+    res = einfuegen(ROOT,datum);
+    }
     return res;
   }
-
+  
+  /**
+   * Rekursive version des einfügens
+   * @param index
+   * @param datum
+   * @return
+   */
+  private T einfuegen(int index, T datum) {
+    T res = null;
+    if(datum.compareTo(getDatum(index)) == 0 )
+    {
+      res = getDatum(index);
+    }
+    else
+    { 
+      if (datum.compareTo(getDatum(index)) < 0)
+      {
+        int links = linkesKindIndex(index);
+        if(getDatum(links) == null )
+        {
+          array.set(links, datum);
+          res = getDatum(links);
+        }
+        else 
+        {
+          res = einfuegen(links,datum);
+        }
+      }
+      else
+      {
+        int rechts = rechtesKindIndex(index);
+        if(getDatum(rechts) == null )
+        {
+          array.set(rechts, datum);
+          res = getDatum(rechts);
+        } 
+        else 
+        {
+          res = einfuegen(rechts,datum);
+        }
+      }
+    }
+    return res;
+  }
+  
   @Override
   public T rechtesKind(T wurzel) {
     int wurzelIndex = getIndex(wurzel);
@@ -64,19 +122,62 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
   @Override
   public List<T> inOrder() {
     ArrayList<T> list = new ArrayList<T>();
+    inOrder(ROOT, list);
+    printList("inOrder", list);
     return list;
+  }
+  
+  /**
+   * rekursive version der symmetrischen Reihenfolge eines Baumes
+   * @param index
+   * @param list Container in der alles abgespeichert wird
+   */
+  private void inOrder(int index, List<T> list){
+    if ( getDatum(index) == null ) return;
+    inOrder(linkesKindIndex(index), list);
+    list.add(getDatum(index));
+    inOrder(rechtesKindIndex(index), list);
   }
   
   @Override
   public List<T> preOrder() {
     ArrayList<T> list = new ArrayList<T>();
+    preOrder(ROOT, list);
+    printList("preOrder", list);
     return list;
   }
+  
+  /**
+   * rekursive version der preOrder eines Baumes
+   * @param index
+   * @param list Container in der alles abgespeichert wird
+   */
+  private void preOrder(int index, List<T> list){
+    if ( getDatum(index) == null ) return;
+    list.add(getDatum(index));
+    preOrder(linkesKindIndex(index), list);
+    preOrder(rechtesKindIndex(index), list);  
+  }
+  
   
   @Override
   public List<T> postOrder() {
     ArrayList<T> list = new ArrayList<T>();
+    postOrder(ROOT, list);
+    printList("postOrder", list);
     return list;
+  }
+  
+  /**
+   * rekursive version der postOrder eines Baumes
+   * @param index
+   * @param list Container in der alles abgespeichert wird
+   */
+  private void postOrder(int index, List<T> list){
+    if ( getDatum(index) == null ) return;
+    postOrder(linkesKindIndex(index), list);
+    postOrder(rechtesKindIndex(index), list);  
+    list.add(getDatum(index));
   }
  
   //-------------------------------------------------------- hilfsmethoden
@@ -123,7 +224,7 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
    * @return Index des Datums
    */
   private int getIndex(T datum) {
-    int index = VOID+1; // Baumwurzel
+    int index = ROOT; // Baumwurzel
     int compare = -1;
     while (compare != 0 && index <= array.size()) {
       compare = datum.compareTo(getDatum(index));
@@ -145,7 +246,20 @@ public class ArrayBaum<T extends Comparable<T>> implements Baum<T> {
    *   Datum, an der Stelle index
    */
   private T getDatum(int index){
-    return index > VOID ? array.get(index): null;
+    return (index > VOID && index < array.size())? array.get(index): null;
+  }
+  
+  /**
+   * Druckt eine Liste auf die Konsole
+   * @param name
+   * @param list
+   */
+  private void printList(String name, List<T> list){
+    System.out.format("%10s:", name );
+    for (T el: list){
+      System.out.format( " %4s", el );
+    }
+    System.out.println();
   }
 
 }
