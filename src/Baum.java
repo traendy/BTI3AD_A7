@@ -48,5 +48,7 @@ public interface Baum<T extends Comparable<T> > {
    * Ausgabe des Baumes PostOrder
    */
   public List<T> postOrder();
+  
+
 
 }
