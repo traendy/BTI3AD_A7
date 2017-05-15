@@ -12,31 +12,45 @@ import java.util.List;
 public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
 
   private Knoten<T> wurzelknoten = null;
+  /**
+   * List benötigt für Ausgabe in den unterschiedlichen Reihenfolgen
+   */
+  private List<T> list;
   
-  public static int testCounter =0;
-  
+  /**
+   * Default Konstruktor
+   */
   public PointerBaum (){
     setWurzelknoten(new Knoten<T>());
   }
 
-  
+  /**
+   * Konstruktor mit datum in Wurzelknoten
+   * @param datum Inhalt des wurzelknotens
+   */
   public PointerBaum (T datum){
     setWurzelknoten(new Knoten<T>(datum));
   }
-
+/**
+ * Fügt ein Element ein
+ */
   @Override
   public T einfuegen(T datum) {
    Knoten<T> k = new Knoten<T>(datum);
    fuegeAmEndeEin(this.wurzelknoten, k);
     return datum;
   }
-
+/**
+ * Rekursives Einfügen 
+ * @param wurzel aktuelle position
+ * @param neuK neu einzufügender Knoten
+ */
   private void fuegeAmEndeEin(Knoten<T> wurzel, Knoten<T> neuK) {
    
   if(wurzel.getData().compareTo(neuK.getData())>0){
     if(wurzel.getLinkesKind()==null){
       wurzel.setLinkesKind(neuK);
-      testCounter++;
+     
       return;
     }else{
       fuegeAmEndeEin(wurzel.getLinkesKind(), neuK);
@@ -45,7 +59,7 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
   }else{
     if(wurzel.getRechtesKind()==null){
       wurzel.setRechtesKind(neuK);
-      testCounter++;
+
     }else{
       fuegeAmEndeEin(wurzel.getRechtesKind(), neuK);
     }
@@ -53,16 +67,23 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
         
   }
 
-
+/**
+ * Gibt das datum des rechten Kindes eines Wurzelknotens zurück
+ */
   @Override
   public T rechtesKind(T wurzel) {
    Knoten<T> k=findeWurzel(wurzel);
    return k.getRechtesKind().getData();
   }
 
-  private Knoten<T> findeWurzel(T wurzel) {
-    Knoten<T> k = new Knoten<T>(wurzel);
-    if(!k.getData().equals(wurzel)){
+/**
+ * Findet ein Datum im Baum
+ * @param datum gesuchtes Datum
+ * @return Knoten mit dem gesuchten Datum
+ */
+  private Knoten<T> findeWurzel(T datum) {
+    Knoten<T> k = new Knoten<T>(datum);
+    if(!k.getData().equals(datum)){
       k=findeWurzel(k.getLinkesKind().getData());
       k=findeWurzel(k.getRechtesKind().getData());
     }
@@ -70,70 +91,94 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
     
     
   }
-
+  /**
+   * Gibt das datum des linken Kindes eines Wurzelknotens zurück
+   */
 
   @Override
   public T linkesKind(T wurzel) {
     Knoten<T> k=findeWurzel(wurzel);
     return k.getLinkesKind().getData();
   }
-
+/**
+ * InOrder Ausgabe des Baumes
+ */
   @Override
   public List<T> inOrder() {
-    ArrayList<T> list = new ArrayList<T>();
-    list= inOrderHelper(list, wurzelknoten);
+    list = new ArrayList<T>();
+    inOrder(wurzelknoten);
+   
     return list;
   }
 
-  /**
-   * Test it 
-   * @param list
-   * @param wurzel
-   * @return
-   */
-  private ArrayList<T> inOrderHelper(ArrayList<T> list, Knoten<T> wurzel) {
-    if(wurzel.getLinkesKind()==null && wurzel.getRechtesKind()==null){
-     
-      return list;
-    }else{
-      list.add(wurzel.getData());
-      if(wurzel.getLinkesKind()!=null)list.addAll(inOrderHelper(list, wurzel.getLinkesKind()));
-      if(wurzel.getRechtesKind()!=null) list.addAll(inOrderHelper(list, wurzel.getRechtesKind()));
-      return list;
-      }
 
   
-  }
 
+/**
+ * preOrder Ausgabe des Baumes
+ */
 
   @Override
   public List<T> preOrder() {
- ArrayList<T> list = new ArrayList<T>();
-    
+  list = new ArrayList<T>();
+    preOrder(wurzelknoten);
     return list;
   }
-
+/**
+ * postOrder Ausgabe des Baumes
+ */
   @Override
   public List<T> postOrder() {
- ArrayList<T> list = new ArrayList<T>();
-    
+    list = new ArrayList<T>();
+    postOrder(wurzelknoten);
     return list;
   }
-
+/**
+ * Getter für die Baumwurzel
+ * @return wurzelknoten
+ */
   public Knoten<T> getWurzelknoten() {
     return wurzelknoten;
   }
-
-  public void setWurzelknoten(Knoten<T> wurzelknoten) {
+/**
+ * Setter für den Wurzelknoten
+ * @param wurzelknoten
+ */
+  private void setWurzelknoten(Knoten<T> wurzelknoten) {
     this.wurzelknoten = wurzelknoten;
   }
-  //inOrder
-  public void display(Knoten<T> root){
+  /**
+   * Rekursiver InOrder
+   * @param root aktueller Knoten
+   */
+  private void inOrder(Knoten<T> root){
     if(root!=null){
-      display(root.getLinkesKind());
-      System.out.print(" " + root.getData());
+      inOrder(root.getLinkesKind());
+      list.add(root.getData());
       
-      display(root.getRechtesKind());
+      inOrder(root.getRechtesKind());
+    }
+  }
+  /**
+   * Rekursiver PreOrder
+   * @param root aktueller Knoten
+   */
+  private void preOrder(Knoten<T> root){
+    if(root!=null){
+      list.add(root.getData());
+      preOrder(root.getLinkesKind());
+      preOrder(root.getRechtesKind());
+    }
+  }
+  /**
+   * Rekursiver postOrder
+   * @param root aktueller Knoten
+   */
+  private void postOrder(Knoten<T> root){
+    if(root!=null){
+      postOrder(root.getLinkesKind());
+      postOrder(root.getRechtesKind());
+      list.add(root.getData());
     }
   }
   
