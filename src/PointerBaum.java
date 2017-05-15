@@ -21,7 +21,7 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
    * Default Konstruktor
    */
   public PointerBaum (){
-    setWurzelknoten(new Knoten<T>());
+    setWurzelknoten(null);
   }
 
   /**
@@ -37,7 +37,13 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
   @Override
   public T einfuegen(T datum) {
    Knoten<T> k = new Knoten<T>(datum);
-   fuegeAmEndeEin(this.wurzelknoten, k);
+   if (wurzelknoten == null){
+     wurzelknoten = k;
+   }
+   else
+   {
+     fuegeAmEndeEin(wurzelknoten, k);
+   }
     return datum;
   }
 /**
@@ -47,8 +53,8 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
  */
   private void fuegeAmEndeEin(Knoten<T> wurzel, Knoten<T> neuK) {
    
-  if(wurzel.getData().compareTo(neuK.getData())>0){
-    if(wurzel.getLinkesKind()==null){
+  if(wurzel.getData().compareTo(neuK.getData()) > 0 ){
+    if(wurzel.getLinkesKind() == null){
       wurzel.setLinkesKind(neuK);
      
       return;
@@ -57,7 +63,7 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
     }
     
   }else{
-    if(wurzel.getRechtesKind()==null){
+    if(wurzel.getRechtesKind() == null){
       wurzel.setRechtesKind(neuK);
 
     }else{
@@ -107,7 +113,7 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
   public List<T> inOrder() {
     list = new ArrayList<T>();
     inOrder(wurzelknoten);
-   
+    printList("inOrder", list);
     return list;
   }
 
@@ -120,8 +126,9 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
 
   @Override
   public List<T> preOrder() {
-  list = new ArrayList<T>();
+    list = new ArrayList<T>();
     preOrder(wurzelknoten);
+    printList("preOrder", list);
     return list;
   }
 /**
@@ -131,6 +138,7 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
   public List<T> postOrder() {
     list = new ArrayList<T>();
     postOrder(wurzelknoten);
+    printList("postOrder", list);
     return list;
   }
 /**
@@ -180,6 +188,19 @@ public class PointerBaum<T extends Comparable<T> > implements Baum<T>{
       postOrder(root.getRechtesKind());
       list.add(root.getData());
     }
+  }
+  
+  /**
+   * Druckt eine Liste auf die Konsole
+   * @param name
+   * @param list
+   */
+  private void printList(String name, List<T> list){
+    System.out.format("%10s:", name );
+    for (T el: list){
+      System.out.format( " %4s", el );
+    }
+    System.out.println();
   }
   
 }
